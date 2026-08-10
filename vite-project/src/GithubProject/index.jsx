@@ -1,81 +1,48 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import TopNav from "./TopNav";
+import InfoSection from "./InfoSection";
+import PersonCard from "./PersonCard";
+
 function GithubProject() {
-  // State to store users
+  // State to store GitHub users
   const [people, setPeople] = useState([]);
 
-  // Fetch users from API
+  // Fetch GitHub users
   const getUserData = async () => {
     try {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/users",
-      );
-
-      console.log(response.data);
+      const response = await axios.get("https://api.github.com/users", {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
+        },
+      });
 
       setPeople(response.data);
     } catch (error) {
-      console.log("Error is:", error);
+      console.error("Error fetching users:", error);
     }
   };
 
-  // Runs once when the component mounts
+  // Fetch data when component mounts
   useEffect(() => {
     getUserData();
   }, []);
 
-  console.log(people);
-
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Github Users</h1>
+    <div>
+      {/* Top Navigation */}
+      <TopNav setPeople={setPeople} />
 
-      {people.map((person) => (
-        <div
-          key={person.id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "20px",
-            marginBottom: "20px",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h2>{person.name}</h2>
+      {/* User Count */}
+      <InfoSection people={people} />
 
-          <p>
-            <strong>Username:</strong> {person.username}
-          </p>
-
-          <p>
-            <strong>Email:</strong> {person.email}
-          </p>
-
-          <p>
-            <strong>Phone:</strong> {person.phone}
-          </p>
-
-          <p>
-            <strong>Website:</strong>{" "}
-            <a
-              href={`https://${person.website}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {person.website}
-            </a>
-          </p>
-
-          <p>
-            <strong>Company:</strong> {person.company.name}
-          </p>
-
-          <p>
-            <strong>City:</strong> {person.address.city}
-          </p>
-        </div>
-      ))}
+      {/* User Cards */}
+      <div style={{ padding: "30px" }}>
+        {people.map((person) => (
+          <PersonCard key={person.id} person={person} />
+        ))}
+      </div>
     </div>
   );
 }
