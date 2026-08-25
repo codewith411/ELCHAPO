@@ -8,3 +8,5 @@ const arObj = {
 
 console.table(ar);
 console.table(arObj);
+
+console.log("30" - "20");
