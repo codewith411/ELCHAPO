@@ -125,3 +125,19 @@ print(f"Student Course: {student_two.course}")
 print(f"Student Year: {student_two.year}")
 print(f"Student School: {student_two.school}")
 print(f"Student Location: {student_two.location}")
+
+
+class House:
+    def __init__(self, owner, location):
+        self.owner = owner
+        self.location = location
+
+    def introduce(self, message):
+        print(f"{message}, my house belongs to {self.owner}.")
+
+
+macrine_house = House(owner="Macrine", location="Kikuyu")
+daniel_house = House(owner="Daniel", location="Muranga")
+
+macrine_house.introduce("Welcome")
+daniel_house.introduce("Hello")
