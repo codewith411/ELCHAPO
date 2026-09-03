@@ -1,45 +1,48 @@
 class BankAccount:
 
-    def __init__(self, name, balance, no):
+    def __init__(self, name, balance, account_no):
         self.name = name
-        self.balance = balance
-        self.no = no
+        self._balance = balance
+        self.account_no = account_no
 
-    # Getter
-    def get_balance(self):
-        return self.balance
+    @property
+    def balance(self):
+        return self._balance
 
-    # Deposit
+    @balance.setter
+    def balance(self, value):
+        if not isinstance(value, (int, float)):
+            print("Balance must be a number")
+            return
+
+        if value < 0:
+            print("Balance cannot be less than 0")
+            return
+
+        self._balance = value
+
     def deposit(self, amount):
-        self.balance += amount
-        print(f"Deposited: {amount}")
+        self.balance = self.balance + amount
 
-    # Withdrawal
     def withdrawal(self, amount):
         if amount <= self.balance:
-            self.balance -= amount
-            print(f"Withdrawn: {amount}")
+            self.balance = self.balance - amount
         else:
             print("Insufficient balance")
 
-    # Show account details
     def show_account_details(self):
-        print(f"Account Name: {self.name}")
-        print(f"Account Number: {self.no}")
+        print(f"Owner: {self.name}")
         print(f"Balance: {self.balance}")
+        print(f"Account No: {self.account_no}")
 
 
-# Create account
-account = BankAccount("Macrine", 5000, "ACC001")
+macrine = BankAccount(
+    name="Macrine",
+    balance=5000,
+    account_no="11223344"
+)
 
-# Deposit
-account.deposit(2000)
+macrine.deposit(1000)
+macrine.withdrawal(500)
 
-# Withdrawal
-account.withdrawal(1000)
-
-# Show balance
-print(f"Current Balance: {account.get_balance()}")
-
-# Show account
-account.show_account_details()
+macrine.show_account_details()
